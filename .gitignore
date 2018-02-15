@@ -1,0 +1,12 @@
+*.sln.cache
+*.suo
+*.pidb
+*.userprefs
+*.usertasks
+*.mdb
+*.pdb
+*.xml
+.DS_Store
+[Oo]bj/
+[Bb]in/
+*.cache
