@@ -56,6 +56,8 @@
     <Compile Include="Responses\AddResponse.cs" />
     <Compile Include="Requests\ModifyRequest.cs" />
     <Compile Include="Responses\ModifyResponse.cs" />
+    <Compile Include="Requests\RenameRequest.cs" />
+    <Compile Include="Responses\RenameResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

@@ -21,6 +21,8 @@ namespace Bismuth.Ldap
 		AddRequest = 0x68,
 		AddResponse = 0x69,
 		DeleteResponse = 0x6b,
+		RenameRequest = 0x6c,
+		RenameResponse = 0x6d
 	}
 
 	public enum BerType
