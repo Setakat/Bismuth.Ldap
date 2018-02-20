@@ -55,6 +55,20 @@ namespace Bismuth.Ldap.Responses
 		public string Type { get; set; }
 
 		public string [] Values { get; set; }
+
+		public ObjectAttribute ()
+			: this ("", "")
+		{ }
+
+		public ObjectAttribute (string type, string value)
+			: this (type, new string [] { value })
+		{ }
+
+		public ObjectAttribute (string type, params string [] values)
+		{
+			Type = type;
+			Values = values;
+		}
 	}
 }
 

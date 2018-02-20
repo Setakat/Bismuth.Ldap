@@ -12,7 +12,7 @@ namespace Bismuth.Ldap.Responses
 		public SearchResponse (NetworkStream stream)
 			: base (stream)
 		{
-			
+			ReadResponse (new LdapStreamReader (stream), ProtocolOperation.SearchResultDone);
 		}
 
 		protected override void ReadResponse (LdapStreamReader reader, ProtocolOperation protocol)
