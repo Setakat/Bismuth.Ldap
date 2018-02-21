@@ -9,7 +9,7 @@ namespace Bismuth.Ldap.Responses
 	{
 		public string ObjectName { get; protected set; }
 
-		public ObjectAttribute [] Attributes { get; protected set; }
+		public Dictionary<string, ObjectAttribute> Attributes { get; protected set; }
 
 		public SearchResult (LdapStreamReader reader)
 		{
@@ -19,19 +19,21 @@ namespace Bismuth.Ldap.Responses
 			Attributes = GetAttributes (reader.GetElementReader(0x30));
 		}
 
-		ObjectAttribute [] GetAttributes (LdapStreamReader reader)
+		Dictionary<string, ObjectAttribute> GetAttributes (LdapStreamReader reader)
 		{
-			List<ObjectAttribute> attributes = new List<ObjectAttribute> ();
+			Dictionary<string, ObjectAttribute> attributes = new Dictionary<string, ObjectAttribute> ();
 
 			while (true) {
 				int nextByte = reader.Peek ();
-				if (nextByte == 0x30)
-					attributes.Add (GetAttribute (reader.GetElementReader(0x30)));
+				if (nextByte == 0x30) {
+					ObjectAttribute attribute = GetAttribute (reader.GetElementReader (0x30));
+					attributes.Add (attribute.Type, attribute);
+				}
 				else if (nextByte == -1)
 					break;
 			}
 
-			return attributes.ToArray ();
+			return attributes;
 		}
 
 		ObjectAttribute GetAttribute (LdapStreamReader reader)
@@ -53,6 +55,11 @@ namespace Bismuth.Ldap.Responses
 	public class ObjectAttribute
 	{
 		public string Type { get; set; }
+
+		public string Value {
+			get { return (Values != null && Values.Length > 0) ? Values [0] : ""; }
+			set { Values = new string [] { value }; }
+		}
 
 		public string [] Values { get; set; }
 

@@ -17,10 +17,12 @@ namespace Bismuth.Ldap.Utils
 			return newArray;
 		}
 
-		//public static AddLeadingZeros (byte [] bytes)
-		//{
-
-		//}
+		public static byte [] AddTrailingZeros (byte [] bytes, int length)
+		{
+			byte [] newBytes = new byte [length];
+			Array.Copy (bytes, newBytes, bytes.Length);
+			return newBytes;
+		}
 	}
 }
 

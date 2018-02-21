@@ -95,11 +95,13 @@ namespace Bismuth.Ldap.Utils
 			int length = reader.ReadByte ();
 			if (length > 127) {
 				// check for long form here
-				int bytesToRead = length - 127;
+				int bytesToRead = length - 128;
 				byte [] buffer = new byte [4];
 				reader.Read (buffer, 0, bytesToRead);
+				// we need to convert the array from big to little eidian. To do so, we'll reverse the array, remove the now leading 0's, and then add them to the end
 				Array.Reverse (buffer);
-				buffer = ByteArray.RemoveLeadingZeros (buffer);
+				buffer = ByteArray.AddTrailingZeros (ByteArray.RemoveLeadingZeros (buffer), 4);
+				// convert the 4 byte array into an integer
 				length = BitConverter.ToInt32 (buffer, 0);
 			}
 			// return short form
