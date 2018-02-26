@@ -9,6 +9,10 @@ namespace Bismuth.Ldap.Responses
 	{
 		public List<SearchResult> Results { get; protected set; }
 
+		public bool HasResults {
+			get { return Results.Count > 0; }
+		}
+
 		public SearchResponse (NetworkStream stream)
 			: base (stream)
 		{

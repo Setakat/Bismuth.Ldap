@@ -5,28 +5,25 @@ using System.IO;
 
 namespace Bismuth.Ldap.Responses
 {
-	public class SearchResult
+	public class SearchResult : LdapEntry
 	{
-		public string ObjectName { get; protected set; }
-
-		public Dictionary<string, ObjectAttribute> Attributes { get; protected set; }
-
 		public SearchResult (LdapStreamReader reader)
+			: base ("")
 		{
 			int contentLength = reader.ReadElementLength ();
 			ObjectName = reader.ReadStringElement ();
 
-			Attributes = GetAttributes (reader.GetElementReader(0x30));
+			Attributes = ReadAttributes (reader.GetElementReader(0x30));
 		}
 
-		Dictionary<string, ObjectAttribute> GetAttributes (LdapStreamReader reader)
+		Dictionary<string, ObjectAttribute> ReadAttributes (LdapStreamReader reader)
 		{
 			Dictionary<string, ObjectAttribute> attributes = new Dictionary<string, ObjectAttribute> ();
 
 			while (true) {
 				int nextByte = reader.Peek ();
 				if (nextByte == 0x30) {
-					ObjectAttribute attribute = GetAttribute (reader.GetElementReader (0x30));
+					ObjectAttribute attribute = ReadAttribute (reader.GetElementReader (0x30));
 					attributes.Add (attribute.Type, attribute);
 				}
 				else if (nextByte == -1)
@@ -36,7 +33,7 @@ namespace Bismuth.Ldap.Responses
 			return attributes;
 		}
 
-		ObjectAttribute GetAttribute (LdapStreamReader reader)
+		ObjectAttribute ReadAttribute (LdapStreamReader reader)
 		{
 			List<string> attributes = new List<string> ();
 			ObjectAttribute attribute = new ObjectAttribute ();
@@ -49,32 +46,6 @@ namespace Bismuth.Ldap.Responses
 			attribute.Values = attributes.ToArray();
 
 			return attribute;
-		}
-	}
-
-	public class ObjectAttribute
-	{
-		public string Type { get; set; }
-
-		public string Value {
-			get { return (Values != null && Values.Length > 0) ? Values [0] : ""; }
-			set { Values = new string [] { value }; }
-		}
-
-		public string [] Values { get; set; }
-
-		public ObjectAttribute ()
-			: this ("", "")
-		{ }
-
-		public ObjectAttribute (string type, string value)
-			: this (type, new string [] { value })
-		{ }
-
-		public ObjectAttribute (string type, params string [] values)
-		{
-			Type = type;
-			Values = values;
 		}
 	}
 }

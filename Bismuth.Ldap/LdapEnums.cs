@@ -25,14 +25,6 @@ namespace Bismuth.Ldap
 		RenameResponse = 0x6d
 	}
 
-	public enum BerType
-	{
-		Boolean = 0x1,
-		Integer = 0x2,
-		OctetString = 0x4,
-		Enum = 0xA
-	}
-
 	public enum LdapResult
 	{
 		Success = 0,
@@ -47,6 +39,14 @@ namespace Bismuth.Ldap
 		BaseObject = 0,
 		SingleLevel = 1,
 		Subtree = 2
+	}
+
+	public enum DeferencePolicy
+	{
+		Never = 0,
+		InSearching = 1,
+		FindingBaseObj = 2,
+		Always = 3
 	}
 }
 
