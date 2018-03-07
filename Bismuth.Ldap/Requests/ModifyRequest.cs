@@ -11,7 +11,7 @@ namespace Bismuth.Ldap.Requests
 	{
 		public string EntryName { get; set; }
 
-		public List<ObjectAttribute> Attributes { get; set; }
+		public List<ModifyAttribute> Attributes { get; set; }
 
 		public ModifyRequest (int messageId)
 			: base (messageId, ProtocolOperation.ModifyRequest)
@@ -42,16 +42,16 @@ namespace Bismuth.Ldap.Requests
 			);
 		}
 
-		protected ListMessageElement GetModificationItem (ObjectAttribute attribute)
+		protected ListMessageElement GetModificationItem (ModifyAttribute attribute)
 		{
 			return new ListMessageElement ().AddElements (
-				new EnumMessageElement (2)
+				new EnumMessageElement ((int)attribute.Modification)
 			).AddElements (
 				GetModificationDescription (attribute)
 			);
 		}
 
-		protected ListMessageElement GetModificationDescription (ObjectAttribute attribute)
+		protected ListMessageElement GetModificationDescription (ModifyAttribute attribute)
 		{
 			return new ListMessageElement ().AddElements (
 				new StringMessageElement (attribute.Type)
@@ -60,7 +60,7 @@ namespace Bismuth.Ldap.Requests
 			);
 		}
 
-		protected ListMessageElement GetAttributeValues (ObjectAttribute attribute)
+		protected ListMessageElement GetAttributeValues (ModifyAttribute attribute)
 		{
 			return new ListMessageElement (0x31).AddElements (attribute.Values.Select (v => new StringMessageElement (v)).ToArray ());
 		}

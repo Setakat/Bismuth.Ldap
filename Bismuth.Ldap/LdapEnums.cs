@@ -48,5 +48,12 @@ namespace Bismuth.Ldap
 		FindingBaseObj = 2,
 		Always = 3
 	}
+
+	public enum ModificationType
+	{
+		Add = 0,
+		Delete = 1,
+		Replace = 2
+	}
 }
 

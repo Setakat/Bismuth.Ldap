@@ -19,6 +19,13 @@ namespace Bismuth.Ldap.Requests
 			Attributes = new List<ObjectAttribute> ();
 		}
 
+		public AddRequest (int messageId, LdapEntry ldapEntry)
+			: base (messageId, ProtocolOperation.AddRequest)
+		{
+			EntryName = ldapEntry.ObjectName;
+			Attributes = new List<ObjectAttribute>(ldapEntry.Attributes.Values);
+		}
+
 		public override LdapResponse GetResponse (NetworkStream stream)
 		{
 			return new AddResponse (stream);

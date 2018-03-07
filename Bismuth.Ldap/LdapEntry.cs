@@ -68,5 +68,21 @@ namespace Bismuth.Ldap
 			Values = values;
 		}
 	}
+
+	public class ModifyAttribute : ObjectAttribute
+	{
+		public ModificationType Modification { get ; set; }
+
+		public ModifyAttribute (string type, ModificationType modification, string value)
+			: this (type, modification, new string [] { value })
+		{ }
+
+		public ModifyAttribute (string type, ModificationType modification, params string [] values)
+		{
+			Type = type;
+			Modification = Modification;
+			Values = values;
+		}
+	}
 }
 
