@@ -17,9 +17,11 @@ namespace Bismuth.Ldap.Utils
 			int value = 0;
 			if (NextElementIs (0x2)) {
 				int length = ReadElementLength ();
-				byte [] bytes = { 00, 00, 00, 00 };
-				reader.Read (bytes, 0, length);
-				value = BitConverter.ToInt32 (bytes, 0);
+				if (length > 0) {
+					byte[] bytes = { 00, 00, 00, 00 };
+					reader.Read (bytes, 0, length);
+					value = BitConverter.ToInt32 (bytes, 0);
+				}
 			}
 			return value;
 		}
@@ -29,9 +31,11 @@ namespace Bismuth.Ldap.Utils
 			int value = 0;
 			if (NextElementIs (0xa)) {
 				int length = ReadElementLength ();
-				byte [] bytes = { 00, 00, 00, 00 };
-				reader.Read (bytes, 0, length);
-				value = BitConverter.ToInt32 (bytes, 0);
+				if (length > 0) {
+					byte[] bytes = { 00, 00, 00, 00 };
+					reader.Read (bytes, 0, length);
+					value = BitConverter.ToInt32 (bytes, 0);
+				}
 			}
 			return value;
 		}
@@ -41,9 +45,11 @@ namespace Bismuth.Ldap.Utils
 			string value = string.Empty;
 			if (NextElementIs (0x4)) {
 				int length = ReadElementLength ();
-				byte [] bytes = new byte [length];
-				reader.Read (bytes, 0, length);
-				value = System.Text.Encoding.UTF8.GetString (bytes);
+				if (length > 0) {
+					byte[] bytes = new byte [length];
+					reader.Read (bytes, 0, length);
+					value = System.Text.Encoding.UTF8.GetString (bytes);
+				}
 			}
 			return value;
 		}
