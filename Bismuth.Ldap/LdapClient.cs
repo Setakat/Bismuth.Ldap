@@ -38,7 +38,7 @@ namespace Bismuth.Ldap
 		/// Sends a LdapRequest to the current Ldap server.
 		/// </summary>
 		/// <param name="ldapRequest">LDAP request.</param>
-		public LdapResponse Send (LdapRequest ldapRequest)
+		public TResponse Send <TResponse>(LdapRequest ldapRequest) where TResponse : LdapResponse
 		{
 			CurrentMessageId = ldapRequest.MessageId;
 			LdapResponse response = null;
@@ -48,12 +48,12 @@ namespace Bismuth.Ldap
 			stream.Write (messageBytes, 0, messageBytes.Length);
 			response = ldapRequest.GetResponse (stream);
 
-			return response;
+			return (TResponse)response;
 		}
 
 		public bool Bind (string userDN, string password, BindAuthentication bindAuthentication)
 		{
-			LdapResponse response = Send (new BindRequest (NextMessageId) {
+			LdapResponse response = Send<BindResponse> (new BindRequest (NextMessageId) {
 				Authentication = (int)bindAuthentication,
 				BindDN = userDN,
 				Password = password
@@ -65,7 +65,7 @@ namespace Bismuth.Ldap
 
 		public void Unbind ()
 		{
-			Send (new UnbindRequest (NextMessageId));
+			Send<LdapResponse> (new UnbindRequest (NextMessageId));
 		}
 
 		protected override void Dispose (bool freeManagedObjects)
