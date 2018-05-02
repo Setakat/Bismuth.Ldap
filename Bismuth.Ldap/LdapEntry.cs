@@ -21,6 +21,12 @@ namespace Bismuth.Ldap
 			return this;
 		}
 
+		public LdapEntry AddAttribute (string attributeName, params string[] values)
+		{
+			Attributes.Add (attributeName, new ObjectAttribute (attributeName, values));
+			return this;
+		}
+
 		public string GetAttributeValue (string attributeName)
 		{
 			return GetAttributeValue (attributeName, string.Empty);
