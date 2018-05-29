@@ -86,7 +86,7 @@ namespace Bismuth.Ldap
 		public ModifyAttribute (string type, ModificationType modification, params string [] values)
 		{
 			Type = type;
-			Modification = Modification;
+			Modification = modification;
 			Values = values;
 		}
 	}

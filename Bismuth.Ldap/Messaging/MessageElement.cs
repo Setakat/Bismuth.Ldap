@@ -93,7 +93,7 @@ namespace Bismuth.Ldap.Messaging
 		{ }
 
 		public StringMessageElement (byte encoding, string value)
-			: base (value)
+			: base (value ?? string.Empty)
 		{
 			EncodingType = encoding;
 		}
@@ -115,6 +115,9 @@ namespace Bismuth.Ldap.Messaging
 
 		protected override byte [] ValueToBytes ()
 		{
+			if (Value == 0)
+				return new byte[] { 0x0 };
+
 			byte [] valueBytes = BitConverter.GetBytes (Value);
 			if (BitConverter.IsLittleEndian)
 				Array.Reverse (valueBytes);
@@ -150,6 +153,8 @@ namespace Bismuth.Ldap.Messaging
 
 		protected override byte [] ValueToBytes ()
 		{
+			if (Value == 0)
+				return new byte[] { 0x0 };
 			byte [] valueBytes = BitConverter.GetBytes (Value);
 			if (BitConverter.IsLittleEndian)
 				Array.Reverse (valueBytes);
