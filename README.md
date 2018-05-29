@@ -30,9 +30,20 @@ using (LdapClient myLdapClient = new LdapClient(myLdapServer, ldapPort))
 {
     // connect to the ldap server
     BindRequest bindRequest = new BindRequest(1) { Authentication = (int)BindAuthentication.Simple };
-    myLdapClient.Send(bindRequest);
+    myLdapClient.Send<BindResponse>(bindRequest);
     // now disconnect
-    myLdapClient.Send(new UnbindRequest(2));
+    myLdapClient.Send<LdapResponse>(new UnbindRequest(2));
+}
+```
+
+Since Bind requests are a common part of any Ldap session, the LdapClient has a convient shortcut method for binding and unbinding. This bind method returns ```true``` if the bind was successful, and raises an exception if it wasn't.
+```csharp
+using (LdapClient myLdapClient = new LdapClient(myLdapServer, ldapPort))
+{
+    // connect to the ldap server
+    bool result = myLdapClient.Bind(userDN, userPwd, BindAuthentication.Simple);
+    // now disconnect
+    myLdapClient.Unbind();
 }
 ```
 
@@ -45,7 +56,7 @@ string MatchedObject -
 string ErrorMessage - Contains the error message from the LDAP server if one occured.
 ```
 
-A variety of Request and Response objects are available that cover the majority of the LDAP operations
+A variety of Request and Response objects are available that cover the majority of the LDAP operations. More information can be found in the [Wiki](../../wiki).
 
 ## Contributions
 
