@@ -4,11 +4,11 @@ using System.Runtime.CompilerServices;
 // Information about this assembly is defined by the following attributes.
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle ("Bismith.Ldap.Test")]
+[assembly: AssemblyTitle ("Bismith.Ldap")]
 [assembly: AssemblyDescription ("")]
 [assembly: AssemblyConfiguration ("")]
-[assembly: AssemblyCompany ("")]
-[assembly: AssemblyProduct ("")]
+[assembly: AssemblyCompany ("TechCertain")]
+[assembly: AssemblyProduct ("Bismith.Ldap")]
 [assembly: AssemblyCopyright ("Alex Bunn © 2017")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]

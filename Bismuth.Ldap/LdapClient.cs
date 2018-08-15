@@ -9,10 +9,11 @@ namespace Bismuth.Ldap
 	public class LdapClient : Disposable
 	{
 		TcpClient currentConnection;
-		NetworkStream currentStream;
 		
 		protected string _directory;
 		protected int _port;
+
+        protected bool _unbound = false;
 
 		public int CurrentMessageId { get; protected set; }
 
@@ -31,7 +32,6 @@ namespace Bismuth.Ldap
 			_port = port;
 			CurrentMessageId = 0;
 			currentConnection = new TcpClient (_directory, _port);
-			currentStream = currentConnection.GetStream ();
 		}
 
 		/// <summary>
@@ -47,6 +47,10 @@ namespace Bismuth.Ldap
 			NetworkStream stream = currentConnection.GetStream ();
 			stream.Write (messageBytes, 0, messageBytes.Length);
 			response = ldapRequest.GetResponse (stream);
+
+            // if we are unbinding, flag it her so we don't need to do it when disposing.
+            if (ldapRequest is UnbindRequest)
+                _unbound = true;
 
 			return (TResponse)response;
 		}
@@ -66,13 +70,13 @@ namespace Bismuth.Ldap
 		public void Unbind ()
 		{
 			Send<LdapResponse> (new UnbindRequest (NextMessageId));
+            _unbound = true;
 		}
 
 		protected override void Dispose (bool freeManagedObjects)
 		{
-			if (currentStream != null) {
-				currentStream.Close ();
-				currentStream.Dispose ();
+            if (!_unbound) {
+                Unbind();
 			}
 			if (currentConnection != null && currentConnection.Connected)
 				currentConnection.Close ();

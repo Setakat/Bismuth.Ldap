@@ -103,10 +103,12 @@ namespace Bismuth.Ldap.Utils
 				// check for long form here
 				int bytesToRead = length - 128;
 				byte [] buffer = new byte [4];
-				reader.Read (buffer, 0, bytesToRead);
-				// we need to convert the array from big to little endian. To do so, we'll reverse the array, remove the now leading 0's, and then add them to the end
-				Array.Reverse (buffer);
-				buffer = ByteArray.AddTrailingZeros (ByteArray.RemoveLeadingZeros (buffer), 4);
+
+                // convert from big endian to little
+                // replaces the array manipulation, which errored out if the length is 'xx 00'. Also less loops.
+                for (int i = bytesToRead - 1; i > -1; i--)
+                    buffer[i] = reader.ReadByte();
+
 				// convert the 4 byte array into an integer
 				length = BitConverter.ToInt32 (buffer, 0);
 			}
